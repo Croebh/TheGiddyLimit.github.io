@@ -1,3 +1,7 @@
+///////////////////////////////////////////////////////////////////////////////
+// Strict mode should not be used, as the roll20 script depends on this file //
+///////////////////////////////////////////////////////////////////////////////
+
 HASH_PART_SEP = ",";
 HASH_LIST_SEP = "_";
 HASH_START = "#";
@@ -964,6 +968,7 @@ SRC_PSA 	= SRC_PS_PREFIX + "A";
 SRC_PSI 	= SRC_PS_PREFIX + "I";
 SRC_PSK 	= SRC_PS_PREFIX + "K";
 SRC_PSZ 	= SRC_PS_PREFIX + "Z";
+SRC_PSX 	= SRC_PS_PREFIX + "X";
 
 SRC_UA_PREFIX = "UA";
 
@@ -1046,6 +1051,7 @@ Parser.SOURCE_JSON_TO_FULL[SRC_PSA] 		= PS_PREFIX + "Amonkhet";
 Parser.SOURCE_JSON_TO_FULL[SRC_PSI] 		= PS_PREFIX + "Innistrad";
 Parser.SOURCE_JSON_TO_FULL[SRC_PSK] 		= PS_PREFIX + "Kaladesh";
 Parser.SOURCE_JSON_TO_FULL[SRC_PSZ] 		= PS_PREFIX + "Zendikar";
+Parser.SOURCE_JSON_TO_FULL[SRC_PSX] 		= PS_PREFIX + "Ixalan";
 Parser.SOURCE_JSON_TO_FULL[SRC_UAA] 		= UA_PREFIX + "Artificer";
 Parser.SOURCE_JSON_TO_FULL[SRC_UAEAG] 		= UA_PREFIX + "Eladrin and Gith";
 Parser.SOURCE_JSON_TO_FULL[SRC_UAEBB] 		= UA_PREFIX + "Eberron";
@@ -1115,6 +1121,7 @@ Parser.SOURCE_JSON_TO_ABV[SRC_PSA] 			= "PSA";
 Parser.SOURCE_JSON_TO_ABV[SRC_PSI] 			= "PSI";
 Parser.SOURCE_JSON_TO_ABV[SRC_PSK] 			= "PSK";
 Parser.SOURCE_JSON_TO_ABV[SRC_PSZ] 			= "PSZ";
+Parser.SOURCE_JSON_TO_ABV[SRC_PSX] 			= "PSX";
 Parser.SOURCE_JSON_TO_ABV[SRC_UAA] 			= "UAA";
 Parser.SOURCE_JSON_TO_ABV[SRC_UAEAG] 		= "UAEaG";
 Parser.SOURCE_JSON_TO_ABV[SRC_UAEBB] 		= "UAEB";
@@ -1367,20 +1374,16 @@ function encodeForHash(toEncode) {
 // SORTING =============================================================================================================
 // TODO refactor into a class
 function ascSort(a, b) {
+	// to handle `FilterItem`s
+	if (a.hasOwnProperty("item") && b.hasOwnProperty("item")) {
+		return _ascSort(a.item, b.item);
+	}
+	return _ascSort(a, b);
+}
+
+function _ascSort(a, b) {
 	if (b === a) return 0;
 	return b < a ? 1 : -1;
-}
-
-function asc_sort(a, b){
-	if ($(b).text() === $(a).text()) return 0;
-	return $(b).text() < $(a).text() ? 1 : -1;
-}
-
-function asc_sort_cr(a, b) {
-	const aNum = Parser.crToNumber($(a).text());
-	const bNum = Parser.crToNumber($(b).text());
-	if (aNum === bNum) return 0;
-	return bNum < aNum ? 1 : -1;
 }
 
 function compareNames(a, b) {
@@ -1432,5 +1435,37 @@ function multiLoadJSON(toLoads, onEachLoadFunction, onFinalLoadFunction) {
 				}
 			}
 		)
+	});
+}
+
+// SHOW/HIDE SEARCH ====================================================================================================
+function addListShowHide() {
+	const toInjectShow = `
+		<div class="col-xs-12" id="showsearch">
+			<button class="btn btn-block btn-default btn-xs" type="button">Show Search</button>
+			<br>
+		</div>	
+	`;
+
+	const toInjectHide = `
+		<button class="btn btn-default" type="button" id="hidesearch">Hide</button>
+	`;
+
+	$(`#filter-search-input-group`).find(`#reset`).before(toInjectHide);
+	$(`#statscontainer`).prepend(toInjectShow);
+
+	const listContainer = $(`#listcontainer`);
+	const showSearchWrpr = $("div#showsearch");
+	const hideSearchBtn = $("button#hidesearch");
+	// collapse/expand search button
+	hideSearchBtn.click(function() {
+		listContainer.hide();
+		showSearchWrpr.show();
+		hideSearchBtn.hide();
+	});
+	showSearchWrpr.find("button").click(function() {
+		listContainer.show();
+		showSearchWrpr.hide();
+		hideSearchBtn.show();
 	});
 }

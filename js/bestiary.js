@@ -110,11 +110,6 @@ function pageInit(loadedSources) {
 		list.sort($this.data("sort"), { order: $this.data("sortby"), sortFunction: sortMonsters });
 	});
 
-	// collapse/expand search button
-	$("button#expandcollapse").click(function() {
-		$(`#listcontainer`).toggle();
-	});
-
 	// proficiency bonus/dice toggle
 	const profBonusDiceBtn = $("button#profbonusdice");
 	profBonusDiceBtn.useDice = false;
@@ -200,9 +195,6 @@ function addMonsters(data) {
 	list.sort("name");
 
 	filterBox.render();
-
-	initHistory();
-	handleFilterChange();
 }
 
 // sorting for form filtering
@@ -432,7 +424,7 @@ function loadhash (id) {
 			const reactionname = reactions[i].name;
 
 			const reactiontext = reactions[i].text;
-			let reactiontexthtml = "<span>" + reactiontext + "</span>";
+			let reactiontexthtml = "<p>" + reactiontext + "</p>";
 			for (let n = 1; n < reactiontext.length; n++) {
 				if (!reactiontext[n]) continue;
 				reactiontexthtml = reactiontexthtml + "<p>" + reactiontext[n] + "</p>";
@@ -475,7 +467,7 @@ function loadhash (id) {
 	$("tr.regionaleffect").remove();
 	$("tr#regionaleffects").hide();
 	if (legendaryGroup) {
-		const thisGroup = legendaryGroupList[legendaryGroup];
+		const thisGroup = meta[legendaryGroup];
 		if (thisGroup.lairActions) renderSection("lairaction", thisGroup.lairActions);
 		if (thisGroup.regionalEffects) renderSection("regionaleffect", thisGroup.regionalEffects);
 	}

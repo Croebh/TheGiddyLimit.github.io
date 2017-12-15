@@ -23,6 +23,7 @@
 	<script type="text/javascript" src="lib/js-cookie.js"></script>
 	<style id="dynamicStyle"></style> <!-- populated with JS -->
 	<script type="text/javascript" src="js/styleswitch.js"></script>
+	<script type="text/javascript" src="js/navigation.js"></script>
 </head>
 
 <body>
@@ -32,55 +33,10 @@
 			<p>Change method on the left, refer to method that appears on the right.</p>
 		</div>
 	</header>
-	<nav class="container">
-		<ul class="nav nav-pills ">
-			<li role="presentation"><a href="5etools.html">5eTools</a></li>
-			<li role="presentation"><a href="rules.html">Rules</a></li>
-			<li role="presentation" class="dropdown">
-				<a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Player Options <span class="caret"></span></a>
-				<ul class="dropdown-menu">
-					<li role="presentation"><a href="classes.html">Classes</a></li>
-					<li role="presentation"><a href="backgrounds.html">Backgrounds</a></li>
-					<li role="presentation"><a href="feats.html">Feats</a></li>
-					<li role="presentation"><a href="races.html">Races</a></li>
-				</ul>
-			</li>
-			<li role="presentation" class="dropdown">
-				<a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">DM Tools <span class="caret"></span></a>
-				<ul class="dropdown-menu">
-					<li role="presentation"><a href="crcalculator.html">CR Calculator</a></li>
-					<li role="presentation"><a href="http://kobold.club" target="_blank" title="I could literally never build something better than Kobold Fight Club">Encounter Builder</a></li>
-					<li role="presentation"><a href="encountergen.html">Encounter Generator</a></li>
-					<li role="presentation"><a href="lootgen.html">Loot Generator</a></li>
-				</ul>
-			</li>
-			<li role="presentation" class="dropdown">
-				<a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">References <span class="caret"></span></a>
-				<ul class="dropdown-menu">
-					<li role="presentation"><a href="bestiary.html">Bestiary</a></li>
-					<li role="presentation"><a href="conditions.html">Conditions</a></li>
-					<li role="presentation"><a href="cults.html">Cults</a></li>
-					<li role="presentation"><a href="items.html">Items</a></li>
-					<li role="presentation"><a href="rewards.html">Other Rewards</a></li>
-					<li role="presentation"><a href="psionics.html">Psionics</a></li>
-					<li role="presentation"><a href="invocations.html">Invocations</a></li>
-					<li role="presentation"><a href="spells.html">Spells</a></li>
-					<li role="presentation"><a href="variantrules.html">Variant Rules</a></li>
-				</ul>
-			</li>
-			<li role="presentation" class="active"><a href="statgen.html">Statgen</a></li>
-			<li role="presentation" class="dropdown">
-				<a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Utilities<span class="caret"></span></a>
-				<ul class="dropdown-menu">
-					<li role="presentation"><a href="converter.html">Stat Block to JSON</a></li>
-					<li role="presentation"><a href="editor.html">WYSIWYG Editor</a></li>
-				</ul>
-			</li>
-			<li role="presentation">
-				<a class="nightModeToggle" href="#" onclick="styleSwitcher.toggleActiveStyleSheet(); return false;"><script>document.write(styleSwitcher.getActiveStyleSheet() === StyleSwitcher.STYLE_DAY ? "Night Mode" : "Day Mode")</script></a>
-			</li>
-		</ul>
-	</nav>
+<nav class="container" id="navigation">
+    <ul class="nav nav-pills" id="navbar">
+    </ul>
+</nav>
 	<main class="container bodyContent">
 
 		<div class="row">
@@ -114,7 +70,7 @@
 					<tr><td></td><td>Base</td><td>Racial</td><td>Total</td><td>Mod</td><td class="choose"></td></tr>
 					<tr id="str">
 						<td>STR</td>
-						<td><input type="number" min="8" max="15" value="8" data-prev="8" class="base"></td>
+						<td><input id="inputBox1" type="number" min="8" max="15" value="8" data-prev="8" class="base"></td>
 						<td><input type="number" class="racial" readonly></td>
 						<td><input type="number" readonly></td>
 						<td><input type="number" readonly></td>
@@ -122,7 +78,7 @@
 					</tr>
 					<tr id="dex">
 						<td>DEX</td>
-						<td><input type="number" min="8" max="15" value="8" data-prev="8" class="base"></td>
+						<td><input id="inputBox2" type="number" min="8" max="15" value="8" data-prev="8" class="base"></td>
 						<td><input type="number" class="racial" readonly></td>
 						<td><input type="number" readonly></td>
 						<td><input type="number" readonly></td>
@@ -130,7 +86,7 @@
 					</tr>
 					<tr id="con">
 						<td>CON</td>
-						<td><input type="number" min="8" max="15" value="8" data-prev="8" class="base"></td>
+						<td><input id="inputBox3" type="number" min="8" max="15" value="8" data-prev="8" class="base"></td>
 						<td><input type="number" class="racial" readonly></td>
 						<td><input type="number" readonly></td>
 						<td><input type="number" readonly></td>
@@ -138,7 +94,7 @@
 					</tr>
 					<tr id="int">
 						<td>INT</td>
-						<td><input type="number" min="8" max="15" value="8" data-prev="8" class="base"></td>
+						<td><input id="inputBox4" type="number" min="8" max="15" value="8" data-prev="8" class="base"></td>
 						<td><input type="number" class="racial" readonly></td>
 						<td><input type="number" readonly></td>
 						<td><input type="number" readonly></td>
@@ -146,7 +102,7 @@
 					</tr>
 					<tr id="wis">
 						<td>WIS</td>
-						<td><input type="number" min="8" max="15" value="8" data-prev="8" class="base"></td>
+						<td><input id="inputBox5" type="number" min="8" max="15" value="8" data-prev="8" class="base"></td>
 						<td><input type="number" class="racial" readonly></td>
 						<td><input type="number" readonly></td>
 						<td><input type="number" readonly></td>
@@ -154,7 +110,7 @@
 					</tr>
 					<tr id="cha">
 						<td>CHA</td>
-						<td><input type="number" min="8" max="15" value="8" data-prev="8" class="base"></td>
+						<td><input id="inputBox6" type="number" min="8" max="15" value="8" data-prev="8" class="base"></td>
 						<td><input type="number" class="racial" readonly></td>
 						<td><input type="number" readonly></td>
 						<td><input type="number" readonly></td>
